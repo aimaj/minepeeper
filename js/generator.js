@@ -10,6 +10,7 @@ var width = 8,
 	flagsLeft = bombCount,
 	bombsFlagged = new Set();
 
+var sheet;
 var grid = [];
 var cellValue = new Set();
 
@@ -43,12 +44,22 @@ const SETTINGS = {
 };
 
 function main() {
-	// SETTINGS.ELEMENTS = SETTINGS.ELEMENTS_EMOJI;
 	generateGrid();
 	placeBombs();
 	printGrid();
 	eventListeners();
-	SETTINGS.CLASSES.MR_FACE.text(SETTINGS.ELEMENTS.SMILE);
+	sheet = createDynamicStylesheet();
+	sheet.insertRule("* {cursor: url(\"assets/smile.png\"), auto;}",0);
+
+	
+}
+
+function createDynamicStylesheet() {
+	var stylesheet = document.createElement("style");
+	//webkit stuff apparently
+	stylesheet.appendChild(document.createTextNode(""));
+	document.head.appendChild(stylesheet);
+	return stylesheet.sheet;
 }
 
 function eventListeners() {
@@ -59,7 +70,7 @@ function eventListeners() {
 			// Left click
 			if (event.which == 1) {
 				if (!cellClasses.includes('open')) {
-					SETTINGS.CLASSES.MR_FACE.text(SETTINGS.ELEMENTS.SURPRISE);
+					sheet.insertRule("* {cursor: url(\"assets/shock.png\"), auto;}",0);
 				}
 			}
 			// Right click
@@ -85,10 +96,10 @@ function eventListeners() {
 				x = parseInt(params[0]);
 				y = parseInt(params[2]);
 				if (!isBomb(x,y)) {
-					SETTINGS.CLASSES.MR_FACE.text(SETTINGS.ELEMENTS.SMILE);
+					sheet.insertRule("* {cursor: url(\"assets/smile.png\"), auto;}",0);
 				}
 				else {
-					SETTINGS.CLASSES.MR_FACE.text(SETTINGS.ELEMENTS.DEAD);
+					sheet.insertRule("* {cursor: url(\"assets/dead.png\"), auto;}",0);
 				}
 			}
 		}
@@ -108,7 +119,7 @@ function reset() {
 	bombsFlagged = new Set();
 	cellValue = new Set();
 	grid = [];
-	SETTINGS.CLASSES.MR_FACE.text(SETTINGS.ELEMENTS.SMILE);
+	sheet.insertRule("* {cursor: url(\"assets/smile.png\"), auto;}",0);
 	generateGrid();
 	resetGrid();
 	placeBombs();
@@ -394,7 +405,7 @@ function flagLonelyBombs() {
 function checkIfWinrar() {
 	if (bombsFlagged.size == bombCount) {
 		gameOver = true;
-		SETTINGS.CLASSES.MR_FACE.text(SETTINGS.ELEMENTS.WIN);
+		sheet.insertRule("* {cursor: url(\"assets/win.png\"), auto;}",0);
 		console.log('congration your are an winrar');
 	}
 }
