@@ -70,6 +70,7 @@ function eventListeners() {
 			// Left click
 			if (event.which == 1) {
 				if (!cellClasses.includes('open')) {
+					sheet.deleteRule(0);
 					sheet.insertRule("* {cursor: url(\"assets/shock.png\"), auto;}",0);
 				}
 			}
@@ -96,9 +97,11 @@ function eventListeners() {
 				x = parseInt(params[0]);
 				y = parseInt(params[2]);
 				if (!isBomb(x,y)) {
+					sheet.deleteRule(0);
 					sheet.insertRule("* {cursor: url(\"assets/smile.png\"), auto;}",0);
 				}
 				else {
+					sheet.deleteRule(0);
 					sheet.insertRule("* {cursor: url(\"assets/dead.png\"), auto;}",0);
 				}
 			}
@@ -119,6 +122,7 @@ function reset() {
 	bombsFlagged = new Set();
 	cellValue = new Set();
 	grid = [];
+	sheet.deleteRule(0);
 	sheet.insertRule("* {cursor: url(\"assets/smile.png\"), auto;}",0);
 	generateGrid();
 	resetGrid();
@@ -405,6 +409,7 @@ function flagLonelyBombs() {
 function checkIfWinrar() {
 	if (bombsFlagged.size == bombCount) {
 		gameOver = true;
+		sheet.deleteRule(0);
 		sheet.insertRule("* {cursor: url(\"assets/win.png\"), auto;}",0);
 		console.log('congration your are an winrar');
 	}
